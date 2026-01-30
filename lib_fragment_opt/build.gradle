@@ -74,5 +74,6 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.10.1'// Optional: Fragment Lifecycle
+    compileOnly project(':fragment_lifecycle')
 }
