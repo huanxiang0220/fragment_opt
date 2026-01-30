@@ -1,6 +1,6 @@
 package com.mystery.fragment.lifecycle
 
-internal class FragmentLifecycleRegistry : FragmentLifecycle() {
+class FragmentLifecycleRegistry : FragmentLifecycle() {
 
     companion object {
 

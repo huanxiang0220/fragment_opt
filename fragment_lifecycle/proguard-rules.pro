@@ -4,6 +4,9 @@
 -keep class com.mystery.fragment.lifecycle.FragmentLifecycle {
     public *;
 }
+-keep class com.mystery.fragment.lifecycle.FragmentLifecycleRegistry {
+    public *;
+}
 -keep class com.mystery.fragment.lifecycle.IFragmentLifecycleCallbacks {
     public *;
 }
