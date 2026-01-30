@@ -1,2 +1,3 @@
 include ':app'
 include ':lib_fragment_opt'
+include ':fragment_lifecycle'

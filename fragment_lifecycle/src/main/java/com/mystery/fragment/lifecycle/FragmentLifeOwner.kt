@@ -1,4 +1,4 @@
-package com.zhitongcaijin.ztc.fragment.life
+package com.mystery.fragment.lifecycle
 
 import androidx.lifecycle.LifecycleOwner
 

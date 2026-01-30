@@ -1,4 +1,4 @@
-package com.zhitongcaijin.ztc.fragment.life
+package com.mystery.fragment.lifecycle
 
 open class FragmentLifecycle {
 
@@ -20,7 +20,7 @@ open class FragmentLifecycle {
     internal fun collectLifecycleCallbacks(): Array<Any>? {
         var callbacks: Array<Any>? = null
         synchronized(mNestedLazyFragmentLifecycleCallbacks) {
-            if (mNestedLazyFragmentLifecycleCallbacks.size > 0) {
+            if (mNestedLazyFragmentLifecycleCallbacks.isNotEmpty()) {
                 callbacks = mNestedLazyFragmentLifecycleCallbacks.toTypedArray()
             }
         }
