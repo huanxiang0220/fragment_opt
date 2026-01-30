@@ -1,12 +1,12 @@
-package com.hourlywork.opt.core
+package com.mystery.fragment_opt.core
 
 import android.util.Log
 import android.util.LruCache
 import com.google.gson.Gson
-import com.hourlywork.opt.config.FragmentOptConfig
-import com.hourlywork.opt.db.FragmentStateEntity
-import com.hourlywork.opt.db.OptDatabase
-import com.hourlywork.opt.viewmodel.InternalStateViewModel
+import com.mystery.fragment_opt.config.FragmentOptConfig
+import com.mystery.fragment_opt.db.FragmentStateEntity
+import com.mystery.fragment_opt.db.OptDatabase
+import com.mystery.fragment_opt.viewmodel.InternalStateViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

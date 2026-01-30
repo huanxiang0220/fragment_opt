@@ -3,10 +3,11 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'maven-publish'
 }
 
 android {
-    namespace 'com.hourlywork.opt'
+    namespace 'com.mystery.fragment_opt'
     compileSdk 34
 
     defaultConfig {
@@ -17,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,6 +28,31 @@ android {
     }
     kotlinOptions {
         jvmTarget = '17'
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.mystery.fragment_opt'
+                artifactId = 'fragment-opt'
+                version = '1.0.0'
+            }
+        }
+        repositories {
+            maven {
+                name = 'LocalRepo'
+                url = layout.buildDirectory.dir("repo")
+            }
+        }
     }
 }
 

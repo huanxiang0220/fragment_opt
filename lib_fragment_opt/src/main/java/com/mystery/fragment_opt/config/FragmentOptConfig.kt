@@ -1,4 +1,4 @@
-package com.hourlywork.opt.config
+package com.mystery.fragment_opt.config
 
 /**
  * 优化库配置类

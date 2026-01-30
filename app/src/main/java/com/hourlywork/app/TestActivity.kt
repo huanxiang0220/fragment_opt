@@ -16,11 +16,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.hourlywork.opt.adapter.OptFragmentStateAdapter
-import com.hourlywork.opt.config.FragmentOptConfig
-import com.hourlywork.opt.core.FragmentOpt
-import com.hourlywork.opt.core.FragmentOptHelper
-import com.hourlywork.opt.core.IOptStrategy
+import com.mystery.fragment_opt.adapter.OptFragmentStateAdapter
+import com.mystery.fragment_opt.config.FragmentOptConfig
+import com.mystery.fragment_opt.core.FragmentOpt
+import com.mystery.fragment_opt.core.FragmentOptHelper
+import com.mystery.fragment_opt.core.IOptStrategy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +35,8 @@ class TestActivity : AppCompatActivity() {
         FragmentOpt.init(this, FragmentOptConfig(
             maxMemoryCacheCount = 3,
             debug = true
-        ))
+        )
+        )
 
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         

@@ -1,4 +1,4 @@
-package com.hourlywork.opt.core
+package com.mystery.fragment_opt.core
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStateAtLeast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Lifecycle
-import com.hourlywork.opt.viewmodel.InternalStateViewModel
+import com.mystery.fragment_opt.viewmodel.InternalStateViewModel
 import kotlinx.coroutines.launch
 
 /**

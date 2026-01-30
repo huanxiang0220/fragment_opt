@@ -1,4 +1,4 @@
-package com.hourlywork.opt.core
+package com.mystery.fragment_opt.core
 
 import androidx.recyclerview.widget.RecyclerView
 

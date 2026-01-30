@@ -1,4 +1,4 @@
-package com.hourlywork.opt.db
+package com.mystery.fragment_opt.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

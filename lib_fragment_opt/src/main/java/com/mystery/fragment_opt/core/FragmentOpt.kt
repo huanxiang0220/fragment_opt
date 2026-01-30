@@ -1,7 +1,7 @@
-package com.hourlywork.opt.core
+package com.mystery.fragment_opt.core
 
 import android.content.Context
-import com.hourlywork.opt.config.FragmentOptConfig
+import com.mystery.fragment_opt.config.FragmentOptConfig
 
 object FragmentOpt {
     
@@ -13,12 +13,5 @@ object FragmentOpt {
         FragmentOptConfig.init(config)
         FragmentCacheManager.init(context)
     }
-    
-    /**
-     * 清除所有磁盘缓存
-     */
-    suspend fun clearAllDiskCache(context: Context) {
-        // 实现清除逻辑
-        // 需要访问 Dao
-    }
+
 }

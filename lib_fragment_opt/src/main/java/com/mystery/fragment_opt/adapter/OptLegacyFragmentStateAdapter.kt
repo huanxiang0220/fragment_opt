@@ -1,4 +1,4 @@
-package com.hourlywork.opt.adapter
+package com.mystery.fragment_opt.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
