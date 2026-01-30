@@ -1,6 +1,7 @@
 package com.mystery.fragment_opt.core
 
 import androidx.recyclerview.widget.RecyclerView
+import com.mystery.fragment_opt.config.FragmentOptConfig
 
 /**
  * 优化库接入接口
@@ -45,4 +46,19 @@ interface IOptStrategy<T : Any> {
      * - false: Activity 销毁时，彻底清除该 Fragment 的所有缓存数据。下次进入相当于全新启动。
      */
     fun shouldRetainStateAfterActivityFinish(): Boolean = true
+
+    /**
+     * 获取自动刷新的阈值 (毫秒)
+     * 默认由 [FragmentOptConfig] 提供
+     */
+    fun getAutoRefreshDuration(): Long = FragmentOptConfig.get().defaultAutoRefreshDuration
+
+    /**
+     * Fragment 在后台（不可见/onPause）时间过长回调
+     * 当 Fragment 从 onPause 到 onResume 间隔超过 [getAutoRefreshDuration] 时触发
+     * 即使 Fragment 被回收重建，只要状态被恢复，此回调依然有效
+     *
+     * @param duration 处于后台的时长 (毫秒)
+     */
+    fun onFragmentLongTimeBackground(duration: Long) {}
 }

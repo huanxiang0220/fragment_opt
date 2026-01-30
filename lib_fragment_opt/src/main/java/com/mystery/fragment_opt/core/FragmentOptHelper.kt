@@ -1,14 +1,15 @@
 package com.mystery.fragment_opt.core
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStateAtLeast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.lifecycle.Lifecycle
+import com.mystery.fragment.lifecycle.FragmentLifeOwner
+import com.mystery.fragment.lifecycle.IFragmentLifecycleCallbacks
 import com.mystery.fragment_opt.viewmodel.InternalStateViewModel
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,7 @@ class FragmentOptHelper<T : Any>(
     private val fragment: Fragment,
     private val strategy: IOptStrategy<T>,
     private val dataClass: Class<T>
-) : DefaultLifecycleObserver {
+) : DefaultLifecycleObserver, IFragmentLifecycleCallbacks {
 
     private lateinit var internalViewModel: InternalStateViewModel
 
@@ -33,6 +34,12 @@ class FragmentOptHelper<T : Any>(
         inline fun <reified T : Any> attach(fragment: Fragment, strategy: IOptStrategy<T>): FragmentOptHelper<T> {
             val helper = FragmentOptHelper(fragment, strategy, T::class.java)
             fragment.lifecycle.addObserver(helper)
+            
+            // 自动适配 FragmentLifeOwner
+            if (fragment is FragmentLifeOwner) {
+                fragment.getFragmentLifecycle().registerLifecycleCallbacks(helper)
+            }
+            
             return helper
         }
     }
@@ -155,12 +162,35 @@ class FragmentOptHelper<T : Any>(
     override fun onResume(owner: LifecycleOwner) {
         // Log.d("FragmentOptHelper", "onResume")
     }
+    
+    override fun onFragmentResume() {
+        val lastHiddenTime = getLastHiddenTime()
+        if (lastHiddenTime > 0) {
+            val now = System.currentTimeMillis()
+            if (now - lastHiddenTime > strategy.getAutoRefreshDuration()) {
+                strategy.onFragmentLongTimeBackground(now - lastHiddenTime)
+            }
+            // 重置，避免重复触发
+            updateLastHiddenTime(0)
+        }
+    }
 
     override fun onPause(owner: LifecycleOwner) {
         saveScrollState()
     }
+    
+    override fun onFragmentPause() {
+        // 当通过 FragmentLifeOwner 触发不可见时，自动保存时间戳和滚动位置
+        updateLastHiddenTime()
+        saveScrollState()
+    }
 
     override fun onDestroy(owner: LifecycleOwner) {
+        // 自动反注册
+        if (fragment is FragmentLifeOwner) {
+            fragment.getFragmentLifecycle().unregisterLifecycleCallbacks(this)
+        }
+        
         val isFinishing = fragment.activity?.isFinishing == true
         val tag = strategy.getUniqueTag()
 

@@ -13,7 +13,14 @@ data class FragmentOptConfig(
     /**
      * 是否开启调试日志
      */
-    val debug: Boolean = false
+    val debug: Boolean = false,
+
+    /**
+     * 默认自动刷新阈值 (毫秒)
+     * 当 Fragment 在后台时间超过此阈值时，onResume 会触发 onFragmentLongTimeBackground
+     * 默认 2 分钟
+     */
+    val defaultAutoRefreshDuration: Long = 2 * 60 * 1000
 ) {
     companion object {
         @Volatile
