@@ -23,6 +23,9 @@ internal class InternalStateViewModel : ViewModel() {
     
     // 标记是否已恢复
     var isRestored: Boolean = false
+
+    // 上次不可见时间 (用于长时间后台检测)
+    var lastHiddenTime: Long = 0
     
     fun clearMemory() {
         cachedData = null

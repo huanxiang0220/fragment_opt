@@ -1,5 +1,6 @@
 package com.mystery.fragment_opt.core
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -125,6 +126,34 @@ class FragmentOptHelper<T : Any>(
     private fun dispatchRestore(data: T) {
         strategy.onDataRestored(data)
         tryRestoreScrollPosition()
+    }
+
+    /**
+     * 手动更新最后不可见时间
+     * 建议在 Fragment 变为不可见时调用 (如 onPause, onHiddenChanged)
+     *
+     * @param time 时间戳，默认当前时间
+     */
+    fun updateLastHiddenTime(time: Long = System.currentTimeMillis()) {
+        if (::internalViewModel.isInitialized) {
+            internalViewModel.lastHiddenTime = time
+        }
+    }
+
+    /**
+     * 获取最后一次保存的不可见时间
+     * 即使 Fragment 被销毁重建，只要数据恢复成功，此值也会被恢复
+     */
+    fun getLastHiddenTime(): Long {
+        return if (::internalViewModel.isInitialized) {
+            internalViewModel.lastHiddenTime
+        } else {
+            0L
+        }
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        // Log.d("FragmentOptHelper", "onResume")
     }
 
     override fun onPause(owner: LifecycleOwner) {

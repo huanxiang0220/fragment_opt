@@ -30,6 +30,7 @@ object FragmentCacheManager {
         val scrollPosition: Int,
         val scrollOffset: Int,
         val pageIndex: Int,
+        val lastHiddenTime: Long = 0,
         val timestamp: Long = System.currentTimeMillis()
     )
 
@@ -79,7 +80,8 @@ object FragmentCacheManager {
             data = data,
             scrollPosition = viewModel.scrollPosition,
             scrollOffset = viewModel.scrollOffset,
-            pageIndex = viewModel.pageIndex
+            pageIndex = viewModel.pageIndex,
+            lastHiddenTime = viewModel.lastHiddenTime
         )
         
         if (isKeep) {
@@ -160,6 +162,7 @@ object FragmentCacheManager {
                 }
                 
                 viewModel.pageIndex = dbEntity.pageIndex
+                viewModel.lastHiddenTime = dbEntity.lastHiddenTime
                 
                 // 重新放入 LRU (默认)
                 // 注意：这里我们暂时不知道是否 keep，因为 restoreState 没传 isKeep。
@@ -170,7 +173,8 @@ object FragmentCacheManager {
                     data = data,
                     scrollPosition = dbEntity.scrollPosition,
                     scrollOffset = dbEntity.scrollOffset,
-                    pageIndex = dbEntity.pageIndex
+                    pageIndex = dbEntity.pageIndex,
+                    lastHiddenTime = dbEntity.lastHiddenTime
                 )
                 memoryCache.put(tag, newItem)
                 
@@ -191,6 +195,7 @@ object FragmentCacheManager {
         viewModel.scrollPosition = item.scrollPosition
         viewModel.scrollOffset = item.scrollOffset
         viewModel.pageIndex = item.pageIndex
+        viewModel.lastHiddenTime = item.lastHiddenTime
     }
 
     private fun saveToRoom(item: CacheItem) {
@@ -207,7 +212,8 @@ object FragmentCacheManager {
                 scrollPosition = item.scrollPosition,
                 scrollOffset = item.scrollOffset,
                 pageIndex = item.pageIndex,
-                lastActiveTime = System.currentTimeMillis()
+                lastActiveTime = System.currentTimeMillis(),
+                lastHiddenTime = item.lastHiddenTime
             )
             database.fragmentStateDao().saveState(entity)
         }

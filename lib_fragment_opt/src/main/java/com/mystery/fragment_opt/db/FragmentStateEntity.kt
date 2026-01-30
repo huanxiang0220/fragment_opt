@@ -32,5 +32,10 @@ data class FragmentStateEntity(
     /**
      * 最后活跃时间，用于淘汰策略
      */
-    val lastActiveTime: Long = System.currentTimeMillis()
+    val lastActiveTime: Long = System.currentTimeMillis(),
+
+    /**
+     * 上次不可见时间
+     */
+    val lastHiddenTime: Long = 0
 )

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [FragmentStateEntity::class], version = 1, exportSchema = false)
+@Database(entities = [FragmentStateEntity::class], version = 2, exportSchema = false)
 abstract class OptDatabase : RoomDatabase() {
     
     abstract fun fragmentStateDao(): FragmentStateDao
