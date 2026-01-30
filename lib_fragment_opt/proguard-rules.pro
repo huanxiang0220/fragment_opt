@@ -35,3 +35,6 @@
 -keepattributes InnerClasses
 -keepattributes *Annotation*
 -keep class kotlin.Metadata { *; }
+
+# 忽略 JDK 17 字符串拼接工厂类的缺失警告，D8 会处理脱糖
+-dontwarn java.lang.invoke.StringConcatFactory
