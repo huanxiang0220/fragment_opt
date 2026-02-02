@@ -16,6 +16,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.mystery.fragment.lifecycle.FragmentLifeOwner
+import com.mystery.fragment.lifecycle.FragmentLifecycle
+import com.mystery.fragment.lifecycle.FragmentLifecycleRegistry
 import com.mystery.fragment_opt.adapter.OptFragmentStateAdapter
 import com.mystery.fragment_opt.config.FragmentOptConfig
 import com.mystery.fragment_opt.core.FragmentOpt
@@ -34,7 +37,8 @@ class TestActivity : AppCompatActivity() {
 
         FragmentOpt.init(this, FragmentOptConfig(
             maxMemoryCacheCount = 3,
-            debug = true
+            debug = true,
+            defaultAutoRefreshDuration = 5000 // 测试用：5秒自动刷新
         )
         )
 
@@ -84,7 +88,8 @@ class TestViewModel : ViewModel() {
 
 // ================= Fragment (普通 Fragment，实现接口) =================
 
-class TestFragment : Fragment(R.layout.fragment_test_opt), IOptStrategy<TestState> {
+class TestFragment : Fragment(R.layout.fragment_test_opt), IOptStrategy<TestState>,
+    FragmentLifeOwner {
 
     private lateinit var tvTitle: TextView
     private lateinit var recyclerView: RecyclerView
@@ -97,6 +102,23 @@ class TestFragment : Fragment(R.layout.fragment_test_opt), IOptStrategy<TestStat
 
     // 声明 Helper
     private lateinit var optHelper: FragmentOptHelper<TestState>
+    
+    // 实现 FragmentLifeOwner
+    private val fragmentLifecycleRegistry = FragmentLifecycleRegistry.create()
+
+    override fun getFragmentLifecycle(): FragmentLifecycle {
+        return fragmentLifecycleRegistry
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        fragmentLifecycleRegistry.onFragmentResume()
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        fragmentLifecycleRegistry.onFragmentPause()
+    }
 
     companion object {
         private const val ARG_ID = "arg_id"
@@ -177,6 +199,20 @@ class TestFragment : Fragment(R.layout.fragment_test_opt), IOptStrategy<TestStat
     //     tvTitle.text = "加载中 ($id)..."
     //     viewModel.loadData(id)
     // }
+    
+    override fun onFragmentLongTimeBackground(duration: Long) {
+        val seconds = duration / 1000
+        Log.d("TestFragment", "已经在后台停留了 $seconds 秒，触发自动刷新逻辑")
+        
+        // 模拟刷新提示
+        context?.let {
+            android.widget.Toast.makeText(it, "后台已停留 $seconds 秒，自动刷新中...", android.widget.Toast.LENGTH_SHORT).show()
+        }
+        
+        // 执行刷新逻辑
+        val id = arguments?.getString(ARG_ID) ?: ""
+        viewModel.loadData(id)
+    }
 }
 
 // ================= Adapter =================
