@@ -1,0 +1,5 @@
+jdk:
+  - openjdk11
+install:
+  - ./gradlew :fragment_lifecycle:publishToMavenLocal
+  - ./gradlew :lib_fragment_opt:publishToMavenLocal
